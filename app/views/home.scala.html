@@ -1,0 +1,36 @@
+
+@import helper._ 
+
+@main("Home") {
+
+<div class="jumbotron">
+	<div class="row">
+		<div class="col-lg-6">
+			<img src="/assets/images/Main.jpg" height="480" width="450" style="margin:10px 0px"/>
+		</div>
+		<div class="col-lg-6">
+			<h2>Data Analytics Powered Knowledge Network in Earth Science</h2>
+			<br>
+			<p> We are developing a prototype Knowledge Network connecting all 
+			the information and data objects in NASA’s Earth science enterprise, 
+			focusing on a well-defined domain - Hurricane Science. We aim to 
+			advance the state-of-the-art NASA <b>knowledge search</b> capability by 
+			going beyond traditional catalog search for data and linking the 
+			different variety of distributed information objects.
+			</p>
+			<br>
+			
+			<!-- <a href="@routes.AboutController.FAQs()" class="btn btn-primary btn-lg" role="button">Quick Start</a> -->
+			
+			<!-- @if(!session.get("username")){ -->
+			
+			<p>
+				@if(false){ <a class="btn btn-primary" href="climate/register"
+					role="button">Register &raquo;</a> }
+			</p>
+			<!-- } -->
+		</div>
+	</div>
+</div>
+
+}

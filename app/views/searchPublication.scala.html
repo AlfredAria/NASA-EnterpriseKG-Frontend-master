@@ -1,0 +1,117 @@
+@(publicationForm: play.data.Form[Publications])
+
+@import helper._
+
+@scripts = {
+	<script src='@routes.Assets.at("javascripts/edit_button.js")'></script>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
+	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  	<script src="//code.jquery.com/ui/1.11.3/jquery-ui.js"></script>
+	<script type="text/javascript">
+		$(document)
+				.ready(
+						function() {
+							$("#preview")
+									.click(
+											function() {
+												var target = document
+														.getElementById("show");
+												if (target.style.display == "none") {
+													target.style.display = "block";
+													$("#preview").text("Hide");
+													var paperTitle = $(
+															"#paperTitle")
+															.val();
+													var author = $("#author")
+															.val();
+													var publicationChannel = $(
+															"#publicationChannel")
+															.val();
+													var year = $(
+															"#year")
+															.val();
+													/* var versionNo = $(
+															"#versionNo")
+															.val(); */
+												
+													if (paperTitle != "") {
+														$("#content")
+																.append(
+																		" Paper Title = "
+																				+ paperTitle);
+													}
+													if (author != ""
+															&& author != null) {
+														$("#content")
+																.append(
+																		" Author = "
+																				+ author);
+													}
+												
+													if (publicationChannel != ""
+															&& publicationChannel != null) {
+														$("#content")
+																.append(
+																		" Publication Channel = "
+																				+ publicationChannel);
+													}
+													if (year != ""
+															&& year != null) {
+														$("#content")
+																.append(
+																		" Year = "
+																				+ year);
+													}
+													if (versionNo != ""
+													/* 		&& versionNo != null) {
+														$("#content")
+																.append(
+																		" Version Number = "
+																				+ versionNo);
+													} */
+
+												} else {
+													$("#content").val('');
+													target.style.display = "none";
+													$("#preview").text(
+															"Preview");
+												}
+											});
+						});
+	</script>
+}
+
+@main("Search Publication", scripts){ 
+	 
+    <h1 style="margin-left:420px">Search Publications</h1>
+    @helper.form(routes.PublicationController.getSearchResult()) {
+    	<div class="ui-widget col-sm-offset-3 col-sm-7">
+    	<div class = "form-group">
+    		@inputText(publicationForm("paperTitle"), 'class -> "form-control", 'id -> "paperTitle", '_label -> Messages("Publication Name"), 'placeholder -> "Tropical", 'size->70) 
+    	</div>
+    	<div class = "form-group">
+    		@inputText(publicationForm("author"), 'class -> "form-control", 'id -> "author", '_label -> Messages("Author"), 'placeholder -> "Alice", 'size->70) 
+    	</div>
+    	
+       	<div class = "form-group">
+       		@inputText(publicationForm("publicationChannel"), 'class -> "form-control", 'id -> "publicationChannel", '_label -> Messages("Publication Channel"), 'placeholder -> "", 'size->70)
+	    </div>
+	    <div class = "form-group">
+	    	@inputText(publicationForm("year"), 'class -> "form-control", 'id -> "year", '_label -> Messages("Year"), 'placeholder -> "2016", 'size->70)
+	    	
+	    </div>
+	    <div class = "form-group">
+<!--        		@inputText(publicationForm("Version Number"), 'class -> "form-control", 'id -> "versionNo", '_label -> Messages("Year"), 'placeholder -> "2001", 'size->70) -->
+	    
+	    	<div id="show" style="display: none;">
+	    		<textarea style="width: 640px" rows="4" id="content"></textarea>
+	    	</div>
+	    </div>
+	    <div align="center">
+	    	<button id="preview" type="button" class="btn btn-info"> Preview</button>
+	    	<input class="btn" type="submit" value="Search">
+	    </div>
+	    </div>
+	    
+	    }
+	 }

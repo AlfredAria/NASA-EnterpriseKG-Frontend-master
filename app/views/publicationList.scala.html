@@ -1,0 +1,38 @@
+@(publications: List[Publications])
+@import helper._
+
+@main("All Publications") {
+
+    <h1>@publications.size() Publications</h1>
+		<table class="table table-striped table-bordered table-condensed ex2 tablesorter" id = "csTable">
+	<thead>
+	<tr class="text-center">
+		<th style = "vertical-align: middle;" class="col-md-3">Publication Name</th>
+		<th style = "vertical-align: middle;" class="col-md-3">Authors</th>
+		<th style = "vertical-align: middle;" class="col-md-2">Publication Channel</th>
+		<th style = "vertical-align: middle;" class="col-md-1">Year</th>
+		<th style = "vertical-align: middle;" class="col-md-4">FileID</th>
+	</tr>
+	</thead>
+	<tbody>
+	@for(publication <- publications) {
+	<tr>
+		<td><span class="@publication.getPaperTitle() editable" data-name='paperTitle'>
+				@publication.getPaperTitle() </span></td>
+				
+		<td><span class="@publication.getPaperTitle() editable" data-name='authors'>
+				@publication.getAuthorList() </span></td>
+				 
+		<td><span class="@publication.getPaperTitle() editable" data-name='publicationChannel'>
+				@publication.getPublicationChannel() </span></td>
+
+		<td><span class="@publication.getPaperTitle() editable" data-name='year'>
+				@publication.getYear() </span></td>
+		
+		<td><span class="@publication.getPaperTitle() editable" data-name='fileID'>
+				@publication.getFileID() </span></td>
+	</tr>
+	}
+	</tbody>
+    </table>
+}

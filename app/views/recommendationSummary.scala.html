@@ -1,0 +1,507 @@
+@(climateServices: List[ClimateService], dataSets: List[Dataset], users: List[User], userBasedDataset: List[String], featureBasedDataset : List[String], itemBasedDataset : List[String], currentUser: String, userSimilarList: List[User], userBasedDatasetHybrid:
+List[String], keyword: String)
+
+@import helper._
+@scripts = {
+<link rel="stylesheet" href='@routes.Assets.at("stylesheets/recomm.css")'>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("#loadingBtn").show();
+		$("#loadingFinishBtn").hide();
+
+		var delay = 1000; //1 seconds
+		setTimeout(function() {
+			$("#loadingBtn").hide();
+			$("#loadingFinishBtn").show();
+			//your code to be executed after 1 seconds
+		}, delay);
+
+		$('#myTabs a').click(function(e) {
+			e.preventDefault();
+			$(this).tab('show');
+		})
+	});
+
+	function sendUserEmail() {
+		var userEmail = $("#userEmail").val();
+		var obj = {
+			email: userEmail
+		};
+
+		var returnId = "";
+
+		$.ajax({
+			url: "/getUserByEmail",
+			data: JSON.stringify(obj),
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			type: "POST"
+		}).done(function(data) {
+			console.log("gotcha");
+			console.log(data);
+			returnId = data.toString();
+			window.location = "/climateService/recommendationSummary/" + "ochimborazo" + "/userIdNumber/" + returnId + "/keyword/climate";
+		});
+	}
+
+	function sendUserId() {
+		var userIdSent = $("#UserIdForRecommend").val();
+		var keyword = $("#keyword").val();
+		if (keyword == "") {
+			keyword = "climate";
+		}
+		window.location = "/climateService/recommendationSummary/" + userIdSent + "/userIdNumber/1" + "/keyword/" + keyword;
+	}
+
+	function sendKeyword() {
+		var userId = $("#UserIdForRecommendService").val();
+		var obj = {
+			"userId": userId
+		};
+		$.ajax({
+			url: "/getServiceByKeyword",
+			data: JSON.stringify(obj),
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			type: "POST"
+		}).done(function(data) {
+			$("#recServiceTable tbody").empty();
+			console.log(data);
+			var serviceName = data.toString();
+			var res = serviceName.split("!");
+			res.pop();
+			var i;
+			for (i in res){
+				var row = 	"<tr><td>N/A</td><td>" + res[i] + "</td><td>N/A</td></tr>";
+				$("#recServiceTable tbody").append(row);
+			}
+		});
+	}
+
+</script>
+}
+
+@main("Climate Services", scripts) {
+
+<h1>Recommendation</h1>
+
+<div>
+	<!-- Nav tabs -->
+	<ul class="nav nav-tabs" role="tablist">
+		<li role="presentation" class="active"><a href="#loadingPage" aria-controls="home" role="tab" data-toggle="tab">Loading Page</a></li>
+		<li role="presentation"><a href="#mostPopService" aria-controls="home" role="tab" data-toggle="tab">Most Popular Publications</a></li>
+		<li role="presentation"><a href="#mostPopDataset" aria-controls="profile" role="tab" data-toggle="tab">Most Popular Dataset</a></li>
+		<li role="presentation"><a href="#mostActUsers" aria-controls="messages" role="tab" data-toggle="tab">Most Active User</a></li>
+		<li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Recommend Dataset</a></li>
+		<li role="presentation"><a href="#similarUsers" aria-controls="similarUsers" role="tab" data-toggle="tab">Recommend User</a></li>
+		<li role="presentation"><a href="#services" aria-controls="services" role="tab" data-toggle="tab">Recommend Publications</a></li>
+	</ul>
+	<!-- Tab panes -->
+	<div class="tab-content">
+		<div role="tabpanel" class="tab-pane active" id="loadingPage">
+			<div class="well">
+				<div class="container">
+					<button class="btn btn-lg btn-warning" id="loadingBtn">
+						<h1><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Loading...</h1></button>
+					<button class="btn btn-lg btn-success" id="loadingFinishBtn">
+						<h1><span class="glyphicon glyphicon-ok glyphicon-ok-animate"></span> Loading finished</h1></button>
+				</div>
+			</div>
+		</div>
+
+		<div role="tabpanel" class="tab-pane " id="mostPopService">
+			<br>
+			<table class="table table-striped table-bordered table-condensed tablesorter" id="mostPopServiceTable">
+				<thead>
+					<tr>
+						<th class="col-md-3 ">Publication Name</th>
+						<th class="col-md-2">Author</th>
+						<th class="col-md-2">Journal Name</th>
+						<th class="col-md-2">Volume</th>
+						<th class="col-md-2">Column</th>
+						<th class="col-md-2">Page</th>
+						<th class="col-md-2">Publication Channel</th>
+						<th class="col-md-2">Year</th>
+					</tr>
+				</thead>
+				<tbody>
+					@for(climateService
+					<- climateServices){ <tr>
+						<td><a href="@climateService.getUrl()">@climateService.getName()</a></td>
+						<td>@climateService.getPurpose()</td>
+						<td><a href="@climateService.getUrl()">@climateService.getUrl()</a></td>
+						<td>@climateService.getScenario()</td>
+						<td>@climateService.getVersionNo()</td>
+						<td>@climateService.getRootServiceId()</td>
+						<!-- xingyuchen: publication channel should be here -->
+						<td>@climateService.getVersionNo()</td>
+						<!-- xingyuchen: year should be here -->
+						<td>@climateService.getRootServiceId()</td>
+						</tr>
+						}
+				</tbody>
+			</table>
+		</div>
+
+		<div role="tabpanel" class="tab-pane" id="mostPopDataset">
+			<br>
+			<table class="table table-striped table-bordered table-condensed tablesorter" id="mostPopDatasetTable">
+				<thead>
+					<tr>
+						<th style="vertical-align: top;" class="col-md-2">Dataset Name</th>
+						<th style="vertical-align: top;" class="col-md-1">Agency</th>
+						<th style="vertical-align: top;" class="col-md-1">Instrument/Model Experiment</th>
+						<th style="vertical-align: top;" class="col-md-2">Physical variable</th>
+						<th style="vertical-align: top;" class="col-md-1">Variable short name</th>
+						<th style="vertical-align: top;" class="col-md-1">Units</th>
+						<th style="vertical-align: top;" class="col-md-1">Grid Dimension</th>
+						<th style="vertical-align: top;" class="col-md-2">Variable Name in Web Interface</th>
+						<th style="vertical-align: top;" class="col-md-1">Data Source Input Parameter</th>
+						<th style="vertical-align: top;" class="col-md-1">Dataset Start Time</th>
+						<th style="vertical-align: top;" class="col-md-1">Dataset End Time</th>
+						<th style="vertical-align: top;" class="col-md-1">Duration</th>
+					</tr>
+				</thead>
+				<tbody>
+					@for(dataSet
+					<- dataSets){ <tr>
+						<td><font size="2">@dataSet.getName()</font></td>
+						<td><font size="2">@dataSet.getAgencyId()</font></td>
+						<td><font size="2">@dataSet.getInstrument()</font></td>
+						<td><font size="2">@dataSet.getPhysicalVariable()</font></td>
+						<td><font size="2">@dataSet.getCMIP5VarName()</font></td>
+						<td><font size="2">@dataSet.getUnits()</font></td>
+						<td><font size="2">@dataSet.getGridDimension()</font></td>
+						<td><font size="2">@dataSet.getVariableNameInWebInterface()</font></td>
+						<td><font size="2">@dataSet.getDataSourceInputParameterToCallScienceApplicationCode()</font></td>
+						<td><font size="2">@dataSet.getStartTime()</font></td>
+						<td><font size="2">@dataSet.getEndTime()</font></td>
+						<td><font size="2">@dataSet.getDuration()</font></td>
+						</tr>
+						}
+				</tbody>
+			</table>
+		</div>
+
+		<div role="tabpanel" class="tab-pane" id="mostActUsers">
+			<br>
+			<table class="table table-striped table-bordered table-condensed tablesorter" id="mostActUsersTable">
+				<thead>
+					<tr>
+						<th class="col-md-1">Id</th>
+						<th class="col-md-1">User Name</th>
+						<th class="col-md-1">First Name</th>
+						<th class="col-md-2">Middle Name</th>
+						<th class="col-md-1">Last Name</th>
+						<th class="col-md-1">Afflication</th>
+						<th class="col-md-2">Email</th>
+						<th class="col-md-2">Research Areas</th>
+					</tr>
+				</thead>
+				<tbody>
+					@for(user
+					<- users){ <tr>
+						<td>@user.getId()</td>
+						<td><span class="@user.getId() editable" data-name='username'>@user.getUserName()</span></td>
+						<td><span class="@user.getId() editable" data-name='firstName'>@user.getFirstName()</span></td>
+						<td><span class="@user.getId() editable" data-name='middleInitial'>@user.getMiddleInitial()</span></td>
+						<td><span class="@user.getId() editable" data-name='lastName'>@user.getLastName()</span></td>
+						<td><span class="@user.getId() editable" data-name='affiliation'>@user.getAffiliation()</span></td>
+						<td><span class="@user.getId() editable" data-name='email'>@user.getEmail()</span></td>
+						<td><span class="@user.getId() editable" data-name='researchFields'>@user.getResearchFields()</span></td>
+						</tr>
+						}
+				</tbody>
+			</table>
+		</div>
+
+		<div role="tabpanel" class="tab-pane " id="settings">
+			<br>
+			<h5>We will recommend datasets to you if you provide user id and interested focused areas.</h5>
+			<form class="form-inline" role="form">
+				<div class="form-group">
+					<label>User Id:</label>
+					<select class="form-control" id="UserIdForRecommend">
+						<option value="ochimborazo">--select user--</option>
+						<option value="ochimborazo">ochimborazo</option>
+						<option value="fcannon">fcannon</option>
+						<option value="kwillmot">kwillmot</option>
+						<option value="nkille">nkille</option>
+						<option value="jnanteza">jnanteza</option>
+						<option value="ksauter">ksauter</option>
+						<option value="jgristey">jgristey</option>
+						<option value="caquilinger">caquilinger</option>
+						<option value="fpolverari">fpolverari</option>
+						<option value="kneff">kneff</option>
+						<option value="emaroon">emaroon</option>
+						<option value="rbuchholz">rbuchholz</option>
+						<option value="abeatriz">abeatriz</option>
+						<option value="htseng">htseng</option>
+						<option value="mlinz">mlinz</option>
+						<option value="kzhang">kzhang</option>
+						<option value="jbrodie">jbrodie</option>
+						<option value="dzermenodia">dzermenodia</option>
+						<option value="cmartinezvi">cmartinezvi</option>
+						<option value="mclavner">mclavner</option>
+						<option value="hwei">hwei</option>
+						<option value="gmarques">gmarques</option>
+						<option value="mroge">mroge</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label>Keywords:</label>
+					<input type="text" class="form-control" id="keyword">
+				</div>
+				<button type="button" class="btn btn-info" onclick="sendUserId()">Recommend</button>
+			</form>
+
+			<br>
+
+			<h4>Current User: <code>@currentUser</code> // Current Keyword: <code>@keyword</code></h4>
+			<div class="row well col-lg-10 ">
+				<div class="col-lg-offset-3 col-lg-6">
+					<div class="panel panel-info">
+
+						<div class="panel-heading">Below please find <strong>ranked</strong> recommended dataset based on the semantic information of dataset, the user's past behavior and peer users' behaviors</div>
+						<div class="panel-body">
+							<p>The supporting algorithms are Latent Dirichlet Allocation (LDA), Collaborative Filtering (CF) and social network analytics.</p>
+						</div>
+
+
+						<table class="table">
+							<thead>
+								<tr>
+									<th>Dataset Name</th>
+									<th>...</th>
+									<th>...</th>
+								</tr>
+							</thead>
+							<tbody>
+								@for(String <- userBasedDatasetHybrid){
+									<tr>
+									<td>@String.substring(1, String.length-1)</td>
+									<td>...</td>
+									<td>...</td>
+									</tr>
+									}
+
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+				<!-- <div class=" col-lg-6">
+					<div class="panel panel-success">
+
+						<div class="panel-heading">Recommended based on dataset
+							similarity and the user's past behavior</div>
+						<div class="panel-body">
+							<p>Keyword based</p>
+						</div>
+
+
+						<table class="table">
+							<thead>
+								<tr>
+									<th>Dataset Name</th>
+									<th>...</th>
+									<th>...</th>
+								</tr>
+							</thead>
+							<tbody>
+								@for(String <- itemBasedDataset){
+								<tr>
+									<td>@String.substring(1, String.length-1)</td>
+									<td>...</td>
+									<td>...</td>
+								</tr>
+								}
+
+							</tbody>
+						</table>
+					</div>
+				</div> -->
+
+				<!-- <div class=" col-lg-6">
+					<div class="panel panel-danger ">
+
+						<div class="panel-heading">Recommended based on peer scientists' dataset usage behavior</div>
+						<div class="panel-body">
+							<p>The supporting algorithm is User-based Collaborative
+								Filtering, which takes into account the dataset usage
+								preferences from other scientists with similar profiles and
+								background.</p>
+						</div>
+
+
+						<table class="table">
+							<thead>
+								<tr>
+									<th>Dataset Name</th>
+									<th>...</th>
+									<th>...</th>
+								</tr>
+							</thead>
+							<tbody>
+								@for(String <- userBasedDataset){
+								<tr>
+									<td>@String.substring(1, String.length-1)</td>
+									<td>...</td>
+									<td>...</td>
+								</tr>
+								}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div> -->
+
+				<!-- <div class="row">
+				<div class="well col-lg-offset-0 col-lg-5">
+					<div class="panel panel-info">
+
+						<div class="panel-heading">Recommended based on past dataset
+							usage history</div>
+						<div class="panel-body">
+							<p>The supporting algorithm is Item-based Collaborative
+								Filtering, which takes into account the dataset usage
+								preferences from the user.</p>
+						</div>
+
+
+						<table class="table">
+							<thead>
+								<tr>
+									<th>Dataset Name</th>
+									<th>...</th>
+									<th>...</th>
+								</tr>
+							</thead>
+							<tbody>
+								@for(String <- featureBasedDataset){
+								<tr>
+									<td>@String.substring(1, String.length-1)</td>
+									<td>...</td>
+									<td>...</td>
+								</tr>
+								}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div> -->
+
+			</div>
+		</div>
+
+		<div role="tabpanel" class="tab-pane" id="similarUsers">
+			<br>
+			<h5>We will find users sharing same research interests.</h5>
+
+			<form class="form-inline" role="form">
+				<div class="form-group">
+					<label>User Email:</label>
+					<input type="text" class="form-control" id="userEmail">
+				</div>
+				<div class="form-group">
+					<label>Keywords:</label>
+					<input type="text" class="form-control" id="keywordUser">
+				</div>
+				<button type="button" class="btn btn-info" onclick="sendUserEmail()">Search</button>
+			</form>
+			<br>
+			<table class="table table-striped table-bordered table-condensed tablesorter" id="mostActUsersTable">
+				<thead>
+					<tr>
+						<th class="col-md-1">Id</th>
+						<th class="col-md-1">User Name</th>
+						<th class="col-md-1">First Name</th>
+						<th class="col-md-2">Middle Name</th>
+						<th class="col-md-1">Last Name</th>
+						<th class="col-md-1">Afflication</th>
+						<th class="col-md-2">Email</th>
+						<th class="col-md-2">Research Areas</th>
+					</tr>
+				</thead>
+				<tbody>
+					@for(user
+					<- userSimilarList){ <tr>
+						<td>@user.getId()</td>
+						<td><span class="@user.getId() editable" data-name='username'>@user.getUserName()</span></td>
+						<td><span class="@user.getId() editable" data-name='firstName'>@user.getFirstName()</span></td>
+						<td><span class="@user.getId() editable" data-name='middleInitial'>@user.getMiddleInitial()</span></td>
+						<td><span class="@user.getId() editable" data-name='lastName'>@user.getLastName()</span></td>
+						<td><span class="@user.getId() editable" data-name='affiliation'>@user.getAffiliation()</span></td>
+						<td><span class="@user.getId() editable" data-name='email'>@user.getEmail()</span></td>
+						<td><span class="@user.getId() editable" data-name='researchFields'>@user.getResearchFields()</span></td>
+						</tr>
+						}
+				</tbody>
+			</table>
+		</div>
+
+
+		<div role="tabpanel" class="tab-pane" id="services">
+			<br>
+			<h5>We will find publications.</h5>
+			<form class="form-inline" role="form">
+				<div class="form-group">
+					<label>User Id:</label>
+					<select class="form-control" id="UserIdForRecommendService">
+						<option value="ochimborazo">--select user--</option>
+						<option value="ochimborazo">ochimborazo</option>
+						<option value="fcannon">fcannon</option>
+						<option value="kwillmot">kwillmot</option>
+						<option value="nkille">nkille</option>
+						<option value="jnanteza">jnanteza</option>
+						<option value="ksauter">ksauter</option>
+						<option value="jgristey">jgristey</option>
+						<option value="caquilinger">caquilinger</option>
+						<option value="fpolverari">fpolverari</option>
+						<option value="kneff">kneff</option>
+						<option value="emaroon">emaroon</option>
+						<option value="rbuchholz">rbuchholz</option>
+						<option value="abeatriz">abeatriz</option>
+						<option value="htseng">htseng</option>
+						<option value="mlinz">mlinz</option>
+						<option value="kzhang">kzhang</option>
+						<option value="jbrodie">jbrodie</option>
+						<option value="dzermenodia">dzermenodia</option>
+						<option value="cmartinezvi">cmartinezvi</option>
+						<option value="mclavner">mclavner</option>
+						<option value="hwei">hwei</option>
+						<option value="gmarques">gmarques</option>
+						<option value="mroge">mroge</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label>Keywords:</label>
+					<input type="text" class="form-control" id="keywordForService">
+				</div>
+				<button type="button" class="btn btn-info" onclick="sendKeyword()">Recommend</button>
+			</form>
+			<br>
+			<table class="table table-striped table-bordered table-condensed tablesorter" id="recServiceTable">
+				<thead>
+					<tr>
+						<th class="col-md-1">Id</th>
+						<th class="col-md-1">Publication Name</th>
+						<th class="col-md-1">URL</th>
+					</tr>
+				</thead>
+				<tbody>
+
+				</tbody>
+			</table>
+		</div>
+
+
+
+	</div>
+</div>
+
+
+}

@@ -1,0 +1,110 @@
+@(publications: List[Publications], publicationMetadata: List[PublicationFigure], publicationTopicKeywords: String, topic: String)
+@import helper._
+
+@main("All Climate Services") {
+
+    <h1>Publication Knowledge Panel</h1>
+    <ul class="nav nav-tabs">
+	  <li class="active"><a href="#tab1" data-toggle="tab">MetaData</a></li>
+	  <li><a href="#tab2" data-toggle="tab">Figures and Captions</a></li>
+	  <li><a href="#tab3" data-toggle="tab">Analytics</a></li>
+	  <!-- <li><a href="#tab4" data-toggle="tab">Related Papers</a></li> -->
+	</ul>
+	<div class="panel-body">
+      <div class="tab-content col-xs-12 col-xs-offset-0">
+		<div class="tab-pane fade in active" id="tab1">
+			<table class="table table-striped table-bordered table-condensed ex2 tablesorter" id = "csTable">
+				<tbody>
+				@for(publication <- publications) {
+					<tr>
+						<th style = "vertical-align: middle;" class="col-md-3">Paper Title</th>
+						<td><span class="@publication.getPaperTitle() editable" data-name='paperTitle'>
+						<a href = "@routes.Assets.at(publication.getFileID().substring(7))" target="_blank"/>@publication.getPaperTitle()</a> </span></td>
+					</tr>
+					<tr>	
+						<th style = "vertical-align: middle;" class="col-md-3">Authors</th>
+						<td><span class="@publication.getPaperTitle() editable" data-name='authors'>
+								@publication.getAuthorList() </span></td>
+					</tr>
+					<tr>		
+						<th style = "vertical-align: middle;" class="col-md-2">Publication Channel</th> 
+						<td><span class="@publication.getPaperTitle() editable" data-name='publicationChannel'>
+								@publication.getPublicationChannel() </span></td>
+					</tr>
+					<tr>
+						<th style = "vertical-align: middle;" class="col-md-1">Year</th>
+						<td><span class="@publication.getPaperTitle() editable" data-name='year'>
+								@publication.getYear() </span></td>
+					</tr>
+					<!-- <tr>
+						<th style = "vertical-align: middle;" class="col-md-4">FileID</th>
+						<td><span class="@publication.getPaperTitle() editable" data-name='fileID'>
+								@publication.getFileID() </span></td>
+				
+					</tr> -->
+				}
+				</tbody>
+		    </table>
+	    </div>
+	    <div class="tab-pane fade" id="tab2">
+		    <h2>@publicationMetadata.size() Publication Metadata</h2>
+				<table class="table table-striped table-bordered table-condensed ex2 tablesorter" id = "csTable">
+				<thead>
+					<tr class="text-center">
+						<th style = "vertical-align: middle;" class="col-md-5">Extracted Figure</th>
+						<th style = "vertical-align: middle;" class="col-md-7">Caption</th>
+					</tr>
+				</thead>
+				<tbody>
+					@for(oneMetadata <- publicationMetadata) {
+					<tr>
+					<td><img src='@routes.Assets.at(oneMetadata.getPath())' width="400"></td>
+					<td><span class="@oneMetadata.getPath() editable" data-name='figurePath'>
+								@oneMetadata.getCaption() </span></td>
+					</tr>
+					}
+				</tbody>
+		    </table>
+	    </div>
+	    <div class="tab-pane fade" id="tab3">
+	    	<table class="table table-striped table-bordered table-condensed ex2 tablesorter" id = "csTable">
+				<tbody>
+					<tr>
+						<th style = "vertical-align: middle;" class="col-md-3">Topic</th>
+						<td><span class="@topic editable" data-name='topic'>
+								@topic </span></td>
+					</tr>
+					<tr>	
+						<th style = "vertical-align: middle;" class="col-md-3">Topic Keywords</th>
+						<td><span class="@publicationTopicKeywords editable" data-name='topicKeywords'>
+								@publicationTopicKeywords
+								</span></td>
+					</tr>
+					@for(publication <- publications) {
+						<tr>		
+							<th style = "vertical-align: middle;" class="col-md-2">Instruments</th> 
+							<td><span class="@publication.getInstrument() editable" data-name='instrument'>
+									@publication.getInstrument() </span></td>
+						</tr>
+						<tr>
+							<th style = "vertical-align: middle;" class="col-md-1">Datasets</th>
+							<td><span class="@publication.getDataset() editable" data-name='year'>
+									@publication.getDataset() </span></td>
+						</tr>
+						<tr>		
+							<th style = "vertical-align: middle;" class = "col-md-1">Variables</th> 
+							<td><span class="@publication.getVariable() editable" data-name='variables'>
+									@publication.getVariable() </span></td>
+						</tr>
+					}
+					
+				</tbody>
+		    </table>
+	    </div>
+	    <div class="tab-pane fade" id="tab4">
+	    c
+	    </div>
+	   </div>
+	  </div>
+    
+}

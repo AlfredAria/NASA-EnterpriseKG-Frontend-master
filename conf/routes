@@ -1,0 +1,119 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET		/							controllers.Application.home()
+GET		/login						controllers.Application.login()
+GET		/logout						controllers.Application.logout()
+GET		/authenticate				controllers.Application.authenticate()
+GET		/signup						controllers.Application.signup()
+GET		/createNewUser				controllers.Application.createNewUser()
+GET		/createSuccess				controllers.Application.createSuccess()
+POST	/isEmailExisted				controllers.Application.isEmailExisted()
+
+# Knowledge Graph
+
+
+#recommendation overview
+GET		/climateService/recommendationSummary/:userId/userIdNumber/:id/keyword/:keyword				controllers.ClimateServiceController.recommendationSummary(userId: String, id: Integer, keyword: String)
+POST    /getUserByEmail                                                                             controllers.ClimateServiceController.getUserByEmail()
+POST    /getServiceByKeyword                                                                        controllers.ClimateServiceController.getServiceByKeyword()
+
+# Climate Service
+GET		    /climateService/allServices									controllers.ClimateServiceController.showAllClimateServices()
+POST		/climateService/add											controllers.ClimateServiceController.addClimateService()
+GET     	/climateService/addAClimateService          				controllers.ClimateServiceController.addAClimateService()
+POST		/climateService/savePage									controllers.ClimateServiceController.passPageStr()
+POST		/assets/html/climateService/serviceModels					controllers.ClimateServiceController.serviceModels()
+POST		/climateService/serviceModels								controllers.ClimateServiceController.serviceModels()
+POST		/climateService/ruleEngineData								controllers.ClimateServiceController.ruleEngineData()
+GET     	/climateService/mostPopularServices							controllers.ClimateServiceController.mostPopularServices()
+GET     	/climateService/mostPopularPublications						controllers.PublicationController.mostPopularPublications()
+GET		    /climateService/mostRecentlyUsedClimateServices				controllers.ClimateServiceController.mostRecentlyUsedClimateServices()
+GET		    /climateService/mostRecentlyAddedClimateServices			controllers.ClimateServiceController.mostRecentlyAddedClimateServices()
+GET		    /climateService/searchClimateService 					 	controllers.ClimateServiceController.searchClimateServices()
+GET 	    /climateService/getSearchResult				    			controllers.ClimateServiceController.getSearchResult()
+
+#replace page
+POST 	/climateService/replaceFile								controllers.ClimateServiceController.replaceFile()
+
+# Publication
+GET			/publication/publicationRegistration 					controllers.PublicationController.publicationRegistration()
+POST		/publication/createNewPublication 						controllers.PublicationController.createNewPublication()
+GET			/publication/allPublications 							controllers.PublicationController.showAllPublications()
+GET			/publication/allPublicationTopics						controllers.PublicationController.showAllPublicationTopics()
+GET			/publication/allPublicationTopicKeywords				controllers.PublicationController.showAllPublicationTopicKeywords()
+GET			/publication/overview 									controllers.PublicationController.showOverview()
+
+GET 		/publication/publicationMetadata/:publicationId         controllers.PublicationController.showPublicationMetadata(publicationId: Integer)
+GET 		/publication/publicationPanel/:publicationId         	controllers.PublicationController.showPublicationPanel(publicationId: Integer)
+GET 		/publication/publicationsByTopicId/:topicId         	controllers.PublicationController.showPublicationsByTopicId(topicId: Integer)
+
+
+GET		    /climateService/allPublications							controllers.PublicationController.showAllPublications()
+GET		    /climateService/mostRecentlyUsedPublications			controllers.PublicationController.mostRecentlyUsedPublications()
+GET         /climateService/mostRecentlyAddedPublications			controllers.PublicationController.mostRecentlyAddedPublications()
+GET		    /publication/searchPublication 					 		controllers.PublicationController.searchPublications()
+GET 	    /publication/getSearchResult				    		controllers.PublicationController.getSearchResult()
+
+# Service Execution Log
+GET     	/serviceLog                                          	controllers.ServiceExecutionLogController.getServiceLog()
+GET    	    /searchServiceLog                                       controllers.ServiceExecutionLogController.searchServiceLog()
+GET		    /searchServiceLogResult									controllers.ServiceExecutionLogController.getSearchServiceLog()
+GET 		/getConfigurationByConfId                               controllers.ServiceExecutionLogController.getConfigurationByConfId()
+GET			/getServiceExecutionLogUrlById							controllers.ServiceExecutionLogController.getServiceExecutionLogUrlById()
+
+# Dataset
+GET     /dataSet/allDatasets                        controllers.DatasetController.showAllDatasets()
+GET		/dataSet/searchDataSet 					 	controllers.DatasetController.searchDataset()
+GET 	/dataSet/getSearchResult				    controllers.DatasetController.getSearchResult()
+GET     /dataSet/mostPopularDatasets				controllers.DatasetController.mostPopularDatasets()
+POST    /getRelatedServiceOfDataset                 controllers.DatasetController.getRelatedServiceOfDataset()
+# Dataset Log
+GET		/datasetLog/allDatasetLogs					controllers.DatasetLogController.getAllDatasetLogs()
+
+# Analytics
+GET     /serviceLogRecommend                        controllers.AnalyticsController.getRecommend()
+GET     /datasetRecommend                           controllers.AnalyticsController.getDatasetRecommend()
+GET     /profileRecommend                           controllers.AnalyticsController.getScientistRecommend()
+GET     /serviceLogGraph                            controllers.AnalyticsController.getLogGraph()
+GET 	/searchAndGenerateWorkflow					controllers.AnalyticsController.getSearchAndGenerateWorkflow()
+GET     /serviceKnowledgeGraph                      controllers.AnalyticsController.getKnowledgeGraph(param1 ?= "User", param2 ?= "Dataset", param3 ?= "Service")
+GET     /relationalKnowledgeGraph                   controllers.AnalyticsController.getRelationalKnowledgeGraph()
+POST	/getSpecifiedKnowledgeGraph					controllers.AnalyticsController.getSpecifiedKnowledgeGraph()
+POST	/getShortestPath 							controllers.AnalyticsController.getShortestPath()
+POST	/getDoubleClickedNodeKnowledgeGraph			controllers.AnalyticsController.getDoubleClickedNodeKnowledgeGraph()
+POST    /getKthShortestPath                         controllers.AnalyticsController.getKthShortestPath()
+POST	/getEdgeData								controllers.AnalyticsController.getEdgeData()
+POST	/getCustomizedNodeKnowledgeGraph			controllers.AnalyticsController.getCustomizedNodeKnowledgeGraph()
+
+# Users
+GET		/scientist/allUsers							controllers.UsersController.getAllUsers()
+GET		/scientist/searchUser 					 	controllers.UsersController.searchUser()
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.at(path="/public", file)
+POST    /assets/*file               controllers.Assets.at(path="/public", file)
+
+
+
+# About
+GET     /aboutUs					controllers.AboutController.aboutUs()
+GET     /aboutProject				controllers.AboutController.aboutProject()
+GET		/tutorial					controllers.AboutController.tutorial()
+GET		/FAQs						controllers.AboutController.FAQs()
+GET   	/scienceUseCase      		controllers.AboutController.scienceUseCase()
+
+# BugReporting
+GET         /bugs                                                controllers.BugReportController.reports()
+GET         /newReport                                           controllers.BugReportController.newReport()
+GET         /bug/list                                            controllers.BugReportController.list()
+POST        /delete/report                                       controllers.BugReportController.deleteReport()
+POST        /solve/report                                        controllers.BugReportController.solveReport()
+
+# AddParameters
+POST	/climateService/addAllParameters						 controllers.ClimateServiceController.addAllParameters()
+
+# Workflow
+GET		/workflow/getServiceLogsByUser							 controllers.WorkflowController.getServiceLogsByUser()

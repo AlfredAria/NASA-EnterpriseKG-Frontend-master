@@ -1,0 +1,125 @@
+<!-- Header -->
+	<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target=".navbar-collapse">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" style="padding-bottom: 0;" href="/">
+					<div>
+					<img src='@routes.Assets.at("images/NASA_logo.png")' style="height: 33px; width: 40px;">
+					<img src='@routes.Assets.at("images/logo.png")' style="height: 12px; width: 160px;">
+					</div>
+				</a>
+			</div>
+			<div class="navbar-collapse collapse" style="height:">
+				<ul class="nav navbar-nav navbar-right">
+
+					<!-- <li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="text-danger">Recommendation</span><b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href='@routes.ClimateServiceController.recommendationSummary("ochimborazo", 1, "climate")'>Summary</a></li>
+						</ul>
+					</li> -->
+
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Publication<b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<!-- <li><a href="@routes.PublicationController.mostRecentlyAddedPublications()">Most Recently Added</a></li>
+							<li><a href="@routes.ClimateServiceController.mostRecentlyAddedClimateServices()">Most Recently Added</a></li>
+							<li><a href="@routes.PublicationController.mostRecentlyUsedPublications()">Most Recently Used</a></li>
+							<li><a href="@routes.ClimateServiceController.mostPopularServices()">Most Popular</a></li>			
+							<li><a href="@routes.PublicationController.mostPopularPublications()">Most Popular</a></li> -->
+							<li><a href="@routes.PublicationController.showOverview()">Overview</a></li>
+							<li><a href="@routes.PublicationController.showAllPublications()">Publication List</a></li>
+							<!-- @if(true) {
+								<li><a href="@routes.ClimateServiceController.addAClimateService()">Register An Publication</a></li>
+							} -->
+							<li><a href="@routes.PublicationController.publicationRegistration()">Publication Registration</a></li>
+							<li><a href="@routes.PublicationController.searchPublications()">Search Publication</a></li>
+						</ul>
+					</li>
+
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">DataSet<b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="@routes.DatasetController.mostPopularDatasets()">Most Popular</a></li>
+							<li><a href="@routes.DatasetController.showAllDatasets()">DataSet List</a></li>
+							@if(false) {
+								<li><a href="#">Register A DataSet</a></li>
+							}
+							<li><a href="@routes.DatasetController.searchDataset()">Search DataSet</a></li>
+						</ul>
+					</li>
+
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Analytics<b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="@routes.DatasetLogController.getAllDatasetLogs">Dataset Log</a></li>
+							<li><a href="@routes.AnalyticsController.getKnowledgeGraph()">Knowledge Graph</a></li>
+<!-- 							<li><a href="@routes.AnalyticsController.getRelationalKnowledgeGraph">Relational Knowledge Graph</a></li>
+							<li><a href="@routes.AnalyticsController.getDatasetRecommend">Semantic Dataset Analytics</a></li>
+							<li><a href="@routes.AnalyticsController.getScientistRecommend">User Analytics</a></li>
+							<li><a href="@routes.AnalyticsController.getLogGraph">Service Execution Log Analytics</a></li> -->
+						</ul>
+					</li>
+
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Scientist<b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="@routes.UsersController.getAllUsers()">All Users</a></li>
+							<li><a href="@routes.UsersController.searchUser()">Search User</a></li>
+							@if(true) {
+								<li><a href="@routes.UsersController.getAllUsers()">Most Active Users</a></li>
+								<li><a href="@routes.BugReportController.reports">Bug Report</a></li>
+								<li><a href="@routes.BugReportController.list">Bug List</a></li>
+							}
+						</ul>
+					</li>
+
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">About<b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="@routes.Application.home()">Home</a></li>
+							<li><a href="@routes.AboutController.aboutUs()">About Us</a></li>
+							<li><a href="@routes.AboutController.aboutProject()">About project</a></li>
+							<li><a href="@routes.AboutController.scienceUseCase()">Science Use Case</a></li>
+							<li><a href="@routes.AboutController.FAQs()">FRQs</a></li>
+							<li><a href="@routes.AboutController.tutorial()">Tutorial</a></li>
+						</ul>
+					</li>
+
+					@if(!session.get("email")) {
+						<form class="navbar-form navbar-right" action="@routes.Application.login()">
+							<button type="submit" class="btn btn-success">Log in</button>
+						</form>
+					} else {
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">My Services<b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="#">My climate services</a></li>
+								<li><a href="#">My datasets</a></li>
+							</ul>
+						</li>
+
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">@session.get("email")<b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="@routes.Application.logout()">Log out</a></li>
+							</ul>
+						</li>
+					}
+
+					@if(false) {
+						<form class="navbar-form navbar-right" action="#">
+							<button type="submit" class="btn btn-success">Admin Console</button>
+						</form>
+					}
+
+				</ul>
+			</div>
+		</div>
+	</div>
