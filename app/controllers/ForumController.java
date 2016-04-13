@@ -139,6 +139,7 @@ public class ForumController extends Controller {
 		new PostTitle()
 		));
 
+
 	public static Result getPosts () {
 		return ok(forumEntrance.render(getPagesHelper(), getPostTitlesHelper(1)));
 	}
@@ -148,11 +149,6 @@ public class ForumController extends Controller {
 			page = 1;
 		return ok(forumEntrance.render(getPagesHelper(), getPostTitlesHelper(page)));
 	}
-
-	public static Result putPost () {
-		
-	}
-
 	
 	public static int getTotalPagesHelper() {
 		return fake.size() % 10;
