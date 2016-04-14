@@ -1,6 +1,6 @@
 package models;
 
-import java.util.Random;
+//import java.util.Random;
 
 public class PostTitle {
 	private int upvote;
@@ -8,11 +8,18 @@ public class PostTitle {
 	private String postTitle;
 	private String postType;
 	public PostTitle () {
-		Random r = new Random();
-		setUpvote(r.nextInt());
-		setDownvote(r.nextInt());
-		setPostTitle("sample" + r.nextInt());
-		setPostType("any");
+//		Random r = new Random();
+//		setUpvote(r.nextInt());
+//		setDownvote(r.nextInt());
+//		setPostTitle("sample" + r.nextInt());
+//		setPostType("any");
+	}
+
+	public PostTitle (int upvote, int downvote, String postTitle, String postType) {
+		setUpvote(upvote);
+        setDownvote(downvote);
+        setPostTitle(postTitle);
+        setPostType(postType);
 	}
 	
 	public int getUpvote() {
