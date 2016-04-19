@@ -39,7 +39,7 @@ public class TestController extends Controller{
 	final static Form<ForumPost> postForm = Form.form(ForumPost.class);
 	
 	public static Result GetPostPage(){
-		return ok(helloworld.render(postForm));
+		return ok(createPost.render(postForm));
 	}
 	
 	public static Result CancelPost(){
@@ -76,7 +76,7 @@ public class TestController extends Controller{
 					.createResponse(ResponseType.UNKNOWN));
 		}
 		
-		return ok(helloworld.render(filledForm));
+		return ok(createPost.render(filledForm));
 		
 	}
 }
