@@ -1,4 +1,4 @@
-name := """climate-service"""
+name := """soc-scientific-network-frontend"""
 
 version := "1.0-SNAPSHOT"
 
@@ -22,3 +22,6 @@ libraryDependencies ++= Seq(
   "mysql" % "mysql-connector-java" % "5.1.34"
 )
 
+
+
+fork in run := true

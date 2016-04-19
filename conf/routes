@@ -2,6 +2,10 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
+# Test Page
+GET		/forum  	  controllers.ForumController.getPosts()
+GET		/forum/page   controllers.ForumController.getPostsAtPage(page: Integer)
+
 # Home page
 GET		/							controllers.Application.home()
 GET		/login						controllers.Application.login()
@@ -11,6 +15,11 @@ GET		/signup						controllers.Application.signup()
 GET		/createNewUser				controllers.Application.createNewUser()
 GET		/createSuccess				controllers.Application.createSuccess()
 POST	/isEmailExisted				controllers.Application.isEmailExisted()
+
+#Test Post
+GET		/forum/create				controllers.TestController.GetPostPage()
+POST	/forum/createConfirm		controllers.TestController.CreatePost()
+GET		/forum/createCancel			controllers.TestController.CancelPost()
 
 # Knowledge Graph
 
