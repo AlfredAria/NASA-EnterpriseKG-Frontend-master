@@ -74,7 +74,7 @@ public class Constants {
 	public static final String GET_ALL_AUTHORS = "/climateService/getAllAuthors/json";
 
 	//forum
-	public static final String ADD_NEW_POST = "/forum/addNewPost";
+	public static final String ADD_NEW_POST = " /forum/createPost";
 
 
 	// bug report
