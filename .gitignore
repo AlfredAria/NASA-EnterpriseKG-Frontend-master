@@ -28,3 +28,4 @@ projectFilesBackup
 .sbtserver/
 project/.sbtserver
 master.log
+build.sbt
