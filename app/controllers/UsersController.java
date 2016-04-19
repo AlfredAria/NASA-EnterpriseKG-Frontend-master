@@ -41,7 +41,47 @@ public class UsersController extends Controller {
 //	public static Result adminPage(){
 //		return ok(adminPage.render(User.all()));
 //	}
-	
+	public static Result login() {
+		Form<User> uc = userForm.binfFromRequest();
+		User user = toSignInUser(uc);
+		String sessionid = User.signIn(user);
+		if(sessionid.equals("")) {
+			flash("error", "username and password do not match");
+			return ok(login.render(userForm));
+		} else {
+			session("userid", sessionid);
+			flash("success", "login successfully");
+			return ok(home.render(user.email, "", ""));
+		}
+	}
+
+	public static Result loginForm() {
+		return ok(login.render(userForm));
+	}
+
+	public static Result signup() {
+		Form<User> uc = userForm.binfFromRequest();
+		User user = toSignInUser(uc);
+		if(User.signup(user)) {
+			flash("success", "create user successfully");
+			return ok(login.render(userForm));
+		} else {
+			flash("error", "email has already used");
+			return ok(signup.render(userForm));
+		}
+	}
+	 
+	public static User toSignInUser(Form<User> form) {
+		User user = new User();
+		user.email = form.field("Email").value();
+		user.password = form.field("Password").value();
+		return user;
+	}
+
+	public static Result signupForm() {
+		return ok(signup.render(userForm));
+	}
+
 	public static Result searchUser(){
 		return ok(searchUser.render(userForm));
 	}
