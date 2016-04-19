@@ -12,6 +12,11 @@ GET		/createNewUser				controllers.Application.createNewUser()
 GET		/createSuccess				controllers.Application.createSuccess()
 POST	/isEmailExisted				controllers.Application.isEmailExisted()
 
+#Test Post
+GET		/forum/create				controllers.TestController.GetPostPage()
+POST	/forum/createConfirm		controllers.TestController.CreatePost()
+GET		/forum/createCancel			controllers.TestController.CancelPost()
+
 # Knowledge Graph
 
 
