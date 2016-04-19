@@ -52,10 +52,11 @@ public class TestController extends Controller{
 		ObjectNode jsonData = Json.newObject();
 		try {
 			jsonData.put("title", filledForm.get().getPostTitle());
-			jsonData.put("link", filledForm.get().getLink());
 			jsonData.put("content", filledForm.get().getPostContent());
 			jsonData.put("timestamp", filledForm.get().getTimeStamp());
-			
+			jsonData.put("link", filledForm.get().getLink());
+			jsonData.put("userId", "defalutID");
+
 			System.out.println(jsonData);
 			// POST Climate Service JSON data
 			JsonNode response = RESTfulCalls.postAPI(Constants.URL_HOST + Constants.CMU_BACKEND_PORT 
