@@ -70,6 +70,14 @@ public class UsersController extends Controller {
 			return ok(signup.render(userForm));
 		}
 	}
+	 
+	public static User toSignInUser(Form<User> form) {
+		User user = new User();
+		user.email = form.field("Email").value();
+		user.password = form.field("Password").value();
+		return user;
+	}
+
 	public static Result signupForm() {
 		return ok(signup.render(userForm));
 	}
