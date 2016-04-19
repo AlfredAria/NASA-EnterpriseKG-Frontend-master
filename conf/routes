@@ -118,4 +118,8 @@ POST	/climateService/addAllParameters						 controllers.ClimateServiceController
 # Workflow
 GET		/workflow/getServiceLogsByUser							 controllers.WorkflowController.getServiceLogsByUser()
 
-GET     /forum/post                                              controllers.ForumTopicController.showDetailedTopic()
+# Forum
+GET     /forum/post/:id                                          controllers.ForumTopicController.showDetailedTopic_test(id: Integer)
+
+
+

@@ -3,4 +3,51 @@
 
 @main("Detailed Forum Topic  Page") {
 
+<div class="container">
+  <div class="row content">
+    <div class="col-md-12">
+      <h2>@detailedTopic.topic.getTitle()</h2>
+      <h5><span class="label label-success">tag</span></h5>
+      <br>
+      <h5><span class="glyphicon glyphicon-time"> @detailedTopic.topic.getTimestamp()</span></h5>
+      <p>@detailedTopic.topic.getContent()</p>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+  
+  
+  @for(comment <- detailedTopic.comments) {
+    <div class="col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4>@comment.getUserName()  <small>@comment.getTimestamp()</small></h4>
+        </div>
+        <div class="panel-body">
+          <p>@comment.getContent()</p>
+          <div class="stats">
+            <a href="#" class="btn btn-default stat-item">
+              <i class="fa fa-thumbs-up icon"></i>12
+            </a>
+            <a href="#" class="btn btn-default stat-item">
+              <i class="fa fa-thumbs-down icon"></i>2
+            </a>
+          </div>
+        </div>
+      </div>
+    }
+      
+      
+      <hr>
+      <form role="form">
+        <div class="form-group">
+          <textarea class="form-control" rows="3" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-success">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+
 }

@@ -122,4 +122,7 @@ public class Constants {
 
 	//workflow
 	public static final String SEARCH_EXECUTION_LOGS_BY_USER = "/serviceExecutionLog/queryExecutionLogsByUser";
+	
+	//forum
+	 public static final String FORUM_POST_DETAIL = "/forum/post/";
 }

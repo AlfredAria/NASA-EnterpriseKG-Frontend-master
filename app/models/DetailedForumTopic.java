@@ -3,11 +3,15 @@ package models;
 import java.util.List;
 
 public class DetailedForumTopic {
-  private ForumPost post;
-  private List<ForumComment> comments;
+  public ForumTopic topic;
+  public List<ForumComment> comments;
   
-  public DetailedForumTopic(ForumPost post, List<ForumComment> comments) {
-    this.post = post;
+  public DetailedForumTopic() {
+    
+  }
+  
+  public DetailedForumTopic(ForumTopic topic, List<ForumComment> comments) {
+    this.topic = topic;
     this.comments = comments;
   }
 }
