@@ -32,7 +32,7 @@ public class ForumTopic {
 		return userName;
 	}
 
-	public void setUserId(String userName) {
+	public void setUserName(String userName) {
 		this.userName = userName;
 	}
 

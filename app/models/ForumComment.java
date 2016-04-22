@@ -16,6 +16,8 @@ public class ForumComment {
     this.timestamp = timestamp;
   }
 
+  public ForumComment() {}
+  
   public ForumComment(Integer commentId, Integer topicId, String userName, String replyTo, String content, String timestamp) {
     this.commentId = commentId;
     this.topicId = topicId;
